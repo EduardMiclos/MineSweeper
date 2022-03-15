@@ -2,10 +2,9 @@
 MineSweeper game made in C#.
 
 <p align="center">
-  <img width="800" src="https://i.imgur.com/kg9wGkr.png" alt="Gitflow diagram">
+  <img width="800" src="https://i.imgur.com/kg9wGkr.png">
 </p>
 
-<h1>Use-Case Diagram</h1>
 <p align="center">
-  <img width="800" src="https://i.imgur.com/ZV5s8pY.png" alt="Use-Case diagram">
+  <img width="800" src="https://i.imgur.com/ZV5s8pY.png">
 </p>
