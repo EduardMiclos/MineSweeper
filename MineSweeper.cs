@@ -37,7 +37,7 @@ namespace Lab3
         internal const int bombEncode = -1;
         int correctlyPlacedFlags;
 
-        private const int initialGameScore  = 29;
+        private const int initialGameScore = 29;
 
         public MineSweeper()
         {
@@ -166,15 +166,22 @@ namespace Lab3
                 if (matrixVal == MineSweeper.bombEncode)
                 {
                     UserInterface.revealMatrix(this.mineMatrix, this.btnMatrix);
-                    this.endGame();
+                    this.endGame("Game finished!\nYour total score: " + this.gameScore);
+                    return;
                 }
-                else if(matrixVal != 0)
+
+                if(matrixVal != 0)
                 {
                     UserInterface.revealButton(btn, matrixVal);
                 }
                 else
                 {
                     UserInterface.revealBoundedWhiteSpaces(this.mineMatrix, this.btnMatrix, clickPosition.x, clickPosition.y);
+                }
+
+                if (hasWon() == true)
+                {
+                    this.endGame("You won!\nYour total score: " + this.gameScore);
                 }
             }
             else if (mouseEvent.Button == MouseButtons.Right)
@@ -232,7 +239,7 @@ namespace Lab3
 
         private void imgRestart_Click(object sender, EventArgs e)
         {
-            this.endGame();
+            this.endGame("Game finished!\nYour total score: " + this.gameScore);
         }
 
         private void mineTimer_Tick(object sender, EventArgs e)
@@ -241,14 +248,14 @@ namespace Lab3
             UserInterface.updateGameTime(lblTime, this.gameTime);
         }
 
-        private void endGame()
+        private void endGame(string messageBoxText)
         {
             this.resetVariables();
             UserInterface.updateGameTime(lblTime, this.gameTime);
 
             mineTimer.Stop();
 
-            if (DialogResult.OK == MessageBox.Show("Game finished!\nYour total score: " + this.gameScore))
+            if (DialogResult.OK == MessageBox.Show(messageBoxText))
             {
                 mainFlow.Controls.Clear();
                 this.restartGame();
@@ -274,6 +281,27 @@ namespace Lab3
             this.resetVariables();
             UserInterface.updateGameScore(lblScore, this.gameScore);
             this.generateButtons();
+        }
+
+        private bool hasWon()
+        {
+            if(this.numBombs != this.correctlyPlacedFlags)
+            {
+                return false;
+            }
+
+            for(int i = 0; i < MineSweeper.dim_Width; i++)
+            {
+                for(int j = 0; j < MineSweeper.dim_Height; j++)
+                {
+                    if (this.btnMatrix[i, j].Text != " " || this.btnMatrix[i, j].Image != null)
+                    {
+                        return false;
+                    }
+                }
+            }
+
+            return true;
         }
 
         private void MineSweeper_Load(object sender, EventArgs e)
